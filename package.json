@@ -1,0 +1,30 @@
+{
+  "name": "mysecret",
+  "version": "0.3.8",
+  "description": "Secret manager based on Google Secret Manager and KeyChain",
+  "scripts": {},
+  "keywords": [
+    "secret",
+    "manager",
+    "google secret manager",
+    "keychain"
+  ],
+  "files": [
+    "lib",
+    "bin"
+  ],
+  "bin": {
+    "mysecret": "./bin/index.js"
+  },
+  "author": "longsir",
+  "license": "MIT",
+  "dependencies": {
+    "@google-cloud/secret-manager": "^3.2.3",
+    "colors": "^1.4.0",
+    "commander": "^6.2.1",
+    "crypto-js": "^4.0.0",
+    "keytar": "^7.3.0",
+    "macos-touchid": "^1.0.3",
+    "prompt": "^1.1.0"
+  }
+}
