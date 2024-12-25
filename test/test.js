@@ -66,7 +66,13 @@ async function runCommand(command, args = []) {
     try {
         const result = await runCommand('node', ['./bin/index.js', 'list']);
         console.log('Final Output:', result);
+
+        // 如果一切正常结束，退出码设为 0
+        process.exit(0);
     } catch (error) {
         console.error('Error:', error.message);
+
+        // 如果出错，退出码设为 1
+        process.exit(1);
     }
 })();
