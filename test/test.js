@@ -1,7 +1,7 @@
 const { spawn } = require('child_process');
 const readline = require('readline');
 
-async function runCommand(command, args = []) {
+async function runCommand(command, args = [], inputs = []) {
     return new Promise((resolve, reject) => {
         console.log(`Spawning command: ${command} ${args.join(' ')}`);
         const child = spawn(command, args);
@@ -64,7 +64,7 @@ async function runCommand(command, args = []) {
 // 测试运行
 (async () => {
     try {
-        const result = await runCommand('node', ['./bin/index.js', 'list']);
+        const result = await runCommand('node', ['./bin/index.js', 'get', '1']);
         console.log('Final Output:', result);
 
         // 如果一切正常结束，退出码设为 0
