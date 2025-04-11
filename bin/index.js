@@ -93,7 +93,6 @@ program.command("get")
         let arr = secretId.split('@');
         let sid = arr[0]; //the secret id
         let sv = arr[1];  //the secret version
-
         sid = getIdFromIndex(sid);
         //先尝试从google获取
         let gstr = await gs.accessSecretVersion(sid, sv || 'latest');
@@ -168,10 +167,14 @@ function removeLocalList(secretId) {
 }
 
 function getIdFromIndex(index) {
+    if (!isInteger(index)) return index;
     if (!fs.existsSync(LOCAL_LIST_CACHE)) return index;
     let arr = JSON.parse(fs.readFileSync(LOCAL_LIST_CACHE, 'utf-8'))
     return arr[parseInt(index)] || index;
 }
+function isInteger(str) {
+    return /^-?\d+$/.test(str);
+  }
 
 /**
  * 存储在keychain中的加密字符串

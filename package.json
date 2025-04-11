@@ -1,8 +1,13 @@
 {
   "name": "mysecret",
-  "version": "0.3.9",
+  "version": "0.4.10",
   "description": "Secret manager based on Google Secret Manager and KeyChain",
-  "scripts": {},
+  "scripts": {
+    "setid": "node bin/index.js setid",
+    "list": "node bin/index.js list",
+    "add": "node bin/index.js add",
+    "get": "node bin/index.js get"
+  },
   "keywords": [
     "secret",
     "manager",
