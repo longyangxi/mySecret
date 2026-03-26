@@ -57,8 +57,9 @@ program.command("add")
             console.log(colors.red("Secret Id cannot be empty!"))
             process.exit(1)
         }
-        if (/[\/\\\.\.]/g.test(secretId)) {
-            console.log(colors.red("Secret Id contains invalid characters!"))
+        // Google Secret Manager IDs: letters, numbers, hyphens, underscores only
+        if (!/^[a-zA-Z0-9_-]+$/.test(secretId)) {
+            console.log(colors.red("Secret Id contains invalid characters! Use only letters, numbers, hyphens, underscores."))
             process.exit(1)
         }
 
@@ -142,6 +143,15 @@ program.command("remove")
 
         const gs = new GoogleSecret(id);
         const { secretId } = await userInput({ secretId: 'Secret Id' });
+
+        if (!secretId || !secretId.trim()) {
+            console.log(colors.red("Secret Id cannot be empty!"))
+            process.exit(1)
+        }
+        if (!/^[a-zA-Z0-9_-]+$/.test(secretId)) {
+            console.log(colors.red("Secret Id contains invalid characters!"))
+            process.exit(1)
+        }
 
         // 确认倒计时逻辑
         console.log(colors.red(`Warning: You are about to delete the secret "${secretId}".`));
@@ -274,9 +284,16 @@ async function showSecret(secretStr, secretId) {
 }
 
 function showResult(secretStr) {
-    // Copy to clipboard hint
-    console.log(colors.green("******RESULT******"));
-    console.log(colors.green(secretStr));
+    // Try to copy to clipboard instead of printing to stdout
+    try {
+        const { execSync } = require('child_process');
+        execSync('pbcopy', { input: secretStr, stdio: ['pipe', 'pipe', 'pipe'] });
+        console.log(colors.green("Secret copied to clipboard. (Will NOT be printed to terminal for security)"));
+    } catch (e) {
+        // pbcopy not available (non-macOS), fall back to masked display
+        console.log(colors.yellow("Clipboard not available. Displaying secret (clear terminal after use):"));
+        console.log(colors.green(secretStr));
+    }
 }
 
 async function countdown(seconds) {
